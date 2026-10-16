@@ -1,170 +1,458 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEOTIGU CLOUD - CYBERPUNK DASHBOARD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; }
-        body { background: #030712; color: #00f3ff; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
-        /* Top Navigation Bar */
-        header { 
-            background: rgba(5, 8, 22, 0.95); 
-            padding: 12px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 2px solid #00f3ff;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
-            z-index: 10;
-        }
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 18px; text-shadow: 0 0 8px #00f3ff; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
-        
-        .btn { 
-            background: transparent; 
-            border: 1px solid #00f3ff; 
-            color: #00f3ff; 
-            padding: 8px 16px; 
-            cursor: pointer; 
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700; 
-            font-size: 11px;
-            margin-left: 8px; 
-            transition: all 0.2s;
-            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-        }
-        .btn:hover { background: #00f3ff; color: #000; box-shadow: 0 0 12px #00f3ff; }
-        .btn.purple { border-color: #bc13fe; color: #bc13fe; }
-        .btn.purple:hover { background: #bc13fe; color: #fff; box-shadow: 0 0 12px #bc13fe; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ceotigu Cloud</title>
 
-        /* Main Workspace */
-        .main { display: flex; flex: 1; height: calc(100vh - 60px); }
-        
-        .sidebar { 
-            width: 380px; 
-            background: rgba(10, 15, 30, 0.95); 
-            border-right: 1px solid rgba(0, 243, 255, 0.3); 
-            padding: 20px; 
-            overflow-y: auto; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-        }
-        
-        .content { 
-            flex: 1; 
-            background: #03050c; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 40px; 
-            text-align: center;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(188, 19, 254, 0.1) 0%, transparent 70%),
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 25px 25px, 25px 25px;
-        }
-
-        .mail-card { 
-            background: rgba(255, 255, 255, 0.02); 
-            border: 1px solid rgba(0, 243, 255, 0.3); 
-            padding: 14px; 
-            border-radius: 6px; 
-            transition: 0.2s;
-        }
-        .mail-card:hover { border-color: #bc13fe; box-shadow: 0 0 10px rgba(188, 19, 254, 0.3); }
-        .mail-address { font-family: monospace; color: #00f3ff; font-size: 13px; margin-bottom: 8px; word-break: break-all; }
-
-        .cyber-panel {
-            background: rgba(10, 15, 30, 0.85);
-            border: 1px solid var(--neon-blue, #00f3ff);
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 520px;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-    </style>
+<style>
+:root {
+  --green: #39ff88;
+  --bg: #030806;
+  --panel: #07140d;
+  --line: #1d5936;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #d9ffe6;
+  font: 15px Consolas, monospace;
+}
+header {
+  padding: 18px 5%;
+  border-bottom: 1px solid var(--line);
+  background: #030a06;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.brand {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--green);
+  letter-spacing: 2px;
+}
+.muted {
+  color: #8db7a0;
+  font-size: 12px;
+  line-height: 1.7;
+}
+nav, .row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 12px;
+}
+button, input { font: inherit; }
+button {
+  background: #071b10;
+  color: var(--green);
+  border: 1px solid #23834a;
+  border-radius: 7px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+button:hover { background: #10351e; }
+button:disabled { opacity: .5; cursor: wait; }
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 22px;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+h2 { font-size: 18px; color: var(--green); }
+.frame {
+  height: 65vh;
+  min-height: 360px;
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+}
+.frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.frame:fullscreen {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+}
+#toggleSize {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 3;
+  font-size: 22px;
+  padding: 5px 12px;
+}
+.row input {
+  flex: 1;
+  min-width: 180px;
+}
+#mailAddress {
+  overflow-wrap: anywhere;
+  color: var(--green);
+  padding: 12px;
+  border: 1px dashed var(--line);
+  margin: 12px 0;
+}
+.message {
+  border: 1px solid var(--line);
+  padding: 12px;
+  border-radius: 6px;
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+.message button { margin-top: 8px; }
+#messageDetail {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#messageBody {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+#toast {
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #071b10;
+  border: 1px solid var(--green);
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: none;
+  z-index: 10;
+  max-width: 90%;
+}
+footer {
+  text-align: center;
+  color: #578568;
+  padding: 20px;
+  font-size: 11px;
+}
+</style>
 </head>
+
 <body>
+<header>
+  <div class="brand">CEOTIGU_CLOUD</div>
+  <div class="muted">YOUR PERSONAL CLOUD CONSOLE</div>
+  <nav>
+    <button onclick="go('machine')">Cloud PC</button>
+    <button onclick="go('email')">Email</button>
+  </nav>
+</header>
 
-    <header>
-        <h1>⚡ CEOTIGU CLOUD DASHBOARD</h1>
-        <div>
-            <button class="btn" onclick="addMail()">+ TẠO MAIL MỚI</button>
-            <button class="btn purple" onclick="openVMOS()">💻 MỞ VMOS CLOUD</button>
-        </div>
-    </header>
+<main>
+  <section class="panel" id="machine">
+    <h2>// CLOUD PC</h2>
 
-    <div class="main">
-        <div class="sidebar">
-            <h3 style="font-family: 'Orbitron', sans-serif; font-size: 13px; color: #00f3ff; letter-spacing: 1px;">DANH SÁCH HÒM THƯ</h3>
-            <div id="mailList"></div>
-        </div>
-        
-        <div class="content">
-            <div class="cyber-panel">
-                <h2 style="font-family: 'Orbitron', sans-serif; margin-bottom: 12px; color: #00f3ff; font-size: 20px; text-shadow: 0 0 8px #00f3ff;">HỆ THỐNG ĐIỀU KHIỂN SẴN SÀNG</h2>
-                <p style="font-size: 15px; color: #aaa; line-height: 1.6; margin-bottom: 25px;">
-                    Các trang web quản lý thư từ và máy chủ đám mây có cơ chế chống nhúng khung hình (iframe). Toàn hãy quản lý danh sách bên trái, bấm <b>COPY</b> địa chỉ hoặc dùng nút bên dưới để mở hòm thư làm việc mượt mà nhất!
-                </p>
-                <button class="btn purple" style="padding: 12px 24px; font-size: 12px;" onclick="openTmailor()">🌐 MỞ TRANG TMAILOR TRỰC TIẾP</button>
-            </div>
-        </div>
+    <div class="frame" id="machineFrame">
+      <iframe
+        id="vmosFrame"
+        title="Cloud PC"
+        src="https://vmoscloud.com/"
+        allow="fullscreen"
+        loading="lazy">
+      </iframe>
+      <button
+        id="toggleSize"
+        title="Phóng to / thu nhỏ"
+        onclick="toggleFullscreen()">⛶</button>
     </div>
 
-    <script>
-        let mails = JSON.parse(localStorage.getItem('ceotigu_list')) || [
-            'ceotigucloud1@tmailor.com',
-            'ceotigucloud2@tmailor.com'
-        ];
+    <p>
+      <button onclick="openCloudPC()">Mở Cloud PC trong tab mới</button>
+    </p>
+    <p class="muted" id="cloudStatus"></p>
+  </section>
 
-        function render() {
-            const list = document.getElementById('mailList');
-            list.innerHTML = '';
-            mails.forEach((m, i) => {
-                list.innerHTML += `
-                    <div class="mail-card">
-                        <div class="mail-address"><b>#${i + 1}:</b> ${m}</div>
-                        <div style="display:flex; gap:6px;">
-                            <button class="btn" style="padding:4px 8px; font-size:10px;" onclick="copyText('${m}')">COPY</button>
-                            <button class="btn purple" style="padding:4px 8px; font-size:10px;" onclick="openTmailor()">MỞ WEB</button>
-                            <button class="btn" style="padding:4px 8px; font-size:10px; border-color:#ff0055; color:#ff0055;" onclick="deleteMail(${i})">XÓA</button>
-                        </div>
-                    </div>`;
-            });
-            localStorage.setItem('ceotigu_list', JSON.stringify(mails));
-        }
+  <section class="panel" id="email">
+    <h2>// EMAIL INBOX</h2>
 
-        function addMail() {
-            const newMail = `ceotigucloud${mails.length + 1}@tmailor.com`;
-            mails.push(newMail);
-            render();
-        }
+    <div class="row">
+      <button id="createBtn" onclick="createMailbox()">＋ Tạo email</button>
+      <button onclick="refreshInbox()">↻ Làm mới</button>
+      <button onclick="copyAddress()">Sao chép địa chỉ</button>
+    </div>
 
-        function deleteMail(index) {
-            mails.splice(index, 1);
-            render();
-        }
+    <div id="mailAddress">Chưa có địa chỉ email.</div>
+    <div id="mailStatus" class="muted" aria-live="polite">Sẵn sàng.</div>
+    <div id="messages"></div>
 
-        function copyText(txt) {
-            navigator.clipboard.writeText(txt);
-            alert('Đã copy: ' + txt);
-        }
+    <div id="messageDetail" class="message" hidden>
+      <h3 id="messageSubject"></h3>
+      <div class="muted" id="messageFrom"></div>
+      <div id="messageBody"></div>
+    </div>
+  </section>
+</main>
 
-        function openTmailor() {
-            window.open('https://tmailor.com/vi', '_blank');
-        }
+<footer>CEOTIGU CLOUD</footer>
+<div id="toast" role="status"></div>
 
-        function openVMOS() {
-            window.open('https://cloud.vmos.com', '_blank');
-        }
+<script>
+/*
+  Lưu ý:
+  API bên dưới là cấu hình mẫu. Nếu dịch vụ email không hỗ trợ
+  các đường dẫn này hoặc yêu cầu xác thực, cần chỉnh theo API thực tế.
+*/
+const API_BASE = "https://mail123.fr/api/v1";
+const STORAGE_KEY = "ceotigu_cloud_mailbox";
 
-        render();
-    </script>
+let mailbox = "";
+let refreshTimer = null;
+let messageCache = [];
+
+const $ = id => document.getElementById(id);
+
+function toast(message) {
+  const el = $("toast");
+  el.textContent = message;
+  el.style.display = "block";
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => {
+    el.style.display = "none";
+  }, 2600);
+}
+
+function go(id) {
+  $(id).scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function openCloudPC() {
+  window.open("https://vmoscloud.com/", "_blank", "noopener");
+}
+
+async function api(path, options = {}) {
+  const response = await fetch(API_BASE + path, {
+    ...options,
+    headers: {
+      "Accept": "application/json",
+      ...(options.headers || {})
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error("Yêu cầu thất bại (" + response.status + ").");
+  }
+
+  return response.json();
+}
+
+function normalizeAddress(data) {
+  return data.address ||
+         data.email ||
+         data.mailbox ||
+         data.data?.address ||
+         "";
+}
+
+function saveMailbox(address) {
+  mailbox = address;
+  localStorage.setItem(STORAGE_KEY, address);
+  $("mailAddress").textContent = address;
+}
+
+function restoreMailbox() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    mailbox = saved;
+    $("mailAddress").textContent = saved;
+    $("mailStatus").textContent = "Đã khôi phục địa chỉ trên thiết bị này.";
+    refreshInbox(true);
+    refreshTimer = setInterval(() => refreshInbox(true), 15000);
+  }
+}
+
+async function createMailbox() {
+  const btn = $("createBtn");
+  btn.disabled = true;
+  $("mailStatus").textContent = "Đang tạo hộp thư…";
+
+  try {
+    const data = await api("/mailbox/new", { method: "POST" });
+    const address = normalizeAddress(data);
+
+    if (!address) {
+      throw new Error("Không nhận được địa chỉ email từ dịch vụ.");
+    }
+
+    saveMailbox(address);
+    messageCache = [];
+    $("messages").replaceChildren();
+    $("messageDetail").hidden = true;
+
+    $("mailStatus").textContent = "Hộp thư đã sẵn sàng.";
+
+    if (refreshTimer) clearInterval(refreshTimer);
+    await refreshInbox(true);
+    refreshTimer = setInterval(() => refreshInbox(true), 15000);
+
+  } catch (error) {
+    $("mailStatus").textContent = "Không tạo được email.";
+    toast(error.message || "Có lỗi xảy ra.");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function refreshInbox(silent = false) {
+  if (!mailbox) {
+    if (!silent) toast("Hãy tạo email trước nhé.");
+    return;
+  }
+
+  if (!silent) $("mailStatus").textContent = "Đang kiểm tra thư…";
+
+  try {
+    const data = await api(
+      "/mailbox/" + encodeURIComponent(mailbox) + "/messages"
+    );
+
+    const list = Array.isArray(data)
+      ? data
+      : (data.messages || data.data || []);
+
+    messageCache = list;
+    renderMessages(list);
+
+    $("mailStatus").textContent =
+      "Cập nhật lúc " + new Date().toLocaleTimeString("vi-VN");
+
+  } catch (error) {
+    $("mailStatus").textContent = "Chưa thể tải thư. Hãy thử làm mới.";
+    if (!silent) toast(error.message || "Không tải được hộp thư.");
+  }
+}
+
+function renderMessages(list) {
+  const host = $("messages");
+  host.replaceChildren();
+
+  if (!list.length) {
+    const empty = document.createElement("div");
+    empty.className = "message muted";
+    empty.textContent = "Chưa có thư mới.";
+    host.append(empty);
+    return;
+  }
+
+  list.forEach((message, index) => {
+    const card = document.createElement("div");
+    card.className = "message";
+
+    const title = document.createElement("strong");
+    title.textContent =
+      message.subject || message.title || "(Không có tiêu đề)";
+
+    const from = document.createElement("div");
+    from.className = "muted";
+    from.textContent =
+      "Người gửi: " + (message.from || message.sender || "Không rõ");
+
+    const date = document.createElement("div");
+    date.className = "muted";
+    date.textContent = message.date || message.created_at || "";
+
+    const open = document.createElement("button");
+    open.textContent = "Đọc thư";
+    open.addEventListener("click", () => readMessage(message, index));
+
+    card.append(title, from, date, open);
+    host.append(card);
+  });
+}
+
+async function readMessage(message, index) {
+  const detail = $("messageDetail");
+  detail.hidden = false;
+  $("messageSubject").textContent =
+    message.subject || message.title || "Nội dung thư";
+  $("messageFrom").textContent =
+    "Người gửi: " + (message.from || message.sender || "Không rõ");
+  $("messageBody").textContent = "Đang tải nội dung thư…";
+
+  try {
+    const id = message.id || message.message_id;
+    let result = message;
+
+    if (id != null && mailbox) {
+      const data = await api(
+        "/mailbox/" + encodeURIComponent(mailbox) +
+        "/messages/" + encodeURIComponent(id)
+      );
+      result = data.message || data.data || data;
+    }
+
+    $("messageSubject").textContent =
+      result.subject || result.title || "Nội dung thư";
+    $("messageFrom").textContent =
+      "Người gửi: " + (result.from || result.sender || "Không rõ");
+
+    const body = result.text || result.body || result.content ||
+                 result.html || "";
+
+    $("messageBody").textContent =
+      body || "Không có nội dung văn bản.";
+
+    detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  } catch (error) {
+    $("messageBody").textContent = "Không đọc được thư. Hãy thử lại.";
+  }
+}
+
+async function copyAddress() {
+  if (!mailbox) {
+    toast("Chưa có địa chỉ để sao chép.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(mailbox);
+    toast("Đã sao chép địa chỉ email.");
+  } catch {
+    toast("Trình duyệt không cho phép sao chép tự động.");
+  }
+}
+
+async function toggleFullscreen() {
+  const frame = $("machineFrame");
+
+  try {
+    if (document.fullscreenElement === frame) {
+      await document.exitFullscreen();
+    } else {
+      await frame.requestFullscreen();
+    }
+  } catch {
+    toast("Không thể bật toàn màn hình trên trình duyệt này.");
+  }
+}
+
+document.addEventListener("fullscreenchange", () => {
+  $("toggleSize").textContent =
+    document.fullscreenElement === $("machineFrame") ? "↙" : "⛶";
+});
+
+restoreMailbox();
+</script>
 </body>
 </html>
