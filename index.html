@@ -5,454 +5,522 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ceotigu Cloud</title>
-
 <style>
-:root {
-  --green: #39ff88;
-  --bg: #030806;
-  --panel: #07140d;
-  --line: #1d5936;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: #d9ffe6;
-  font: 15px Consolas, monospace;
-}
-header {
-  padding: 18px 5%;
-  border-bottom: 1px solid var(--line);
-  background: #030a06;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-}
-.brand {
-  font-size: 22px;
-  font-weight: bold;
-  color: var(--green);
-  letter-spacing: 2px;
-}
-.muted {
-  color: #8db7a0;
-  font-size: 12px;
-  line-height: 1.7;
-}
-nav, .row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-top: 12px;
-}
-button, input { font: inherit; }
-button {
-  background: #071b10;
-  color: var(--green);
-  border: 1px solid #23834a;
-  border-radius: 7px;
-  padding: 10px 14px;
-  cursor: pointer;
-}
-button:hover { background: #10351e; }
-button:disabled { opacity: .5; cursor: wait; }
-main {
-  max-width: 1100px;
-  margin: auto;
-  padding: 22px;
-}
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 18px;
-  margin-bottom: 18px;
-}
-h2 { font-size: 18px; color: var(--green); }
-.frame {
-  height: 65vh;
-  min-height: 360px;
-  position: relative;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-  background: #000;
-}
-.frame iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-.frame:fullscreen {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  border-radius: 0;
-  background: #000;
-}
-#toggleSize {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  z-index: 3;
-  font-size: 22px;
-  padding: 5px 12px;
-}
-.row input {
-  flex: 1;
-  min-width: 180px;
-}
-#mailAddress {
-  overflow-wrap: anywhere;
-  color: var(--green);
-  padding: 12px;
-  border: 1px dashed var(--line);
-  margin: 12px 0;
-}
-.message {
-  border: 1px solid var(--line);
-  padding: 12px;
-  border-radius: 6px;
-  margin: 8px 0;
-  overflow-wrap: anywhere;
-}
-.message button { margin-top: 8px; }
-#messageDetail {
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-#messageBody {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-#toast {
-  position: fixed;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #071b10;
-  border: 1px solid var(--green);
-  padding: 12px 16px;
-  border-radius: 8px;
-  display: none;
-  z-index: 10;
-  max-width: 90%;
-}
-footer {
-  text-align: center;
-  color: #578568;
-  padding: 20px;
-  font-size: 11px;
+*{box-sizing:border-box}
+body{margin:0;background:#050a07;color:#e6fff0;font:14px Arial,sans-serif}
+header{padding:18px 22px;border-bottom:1px solid #1d4930;background:#08120b}
+.logo{font-size:23px;font-weight:bold;color:#39ff88}
+main{max-width:1400px;margin:auto;padding:18px;display:grid;gap:16px}
+.panel{background:#0b1510;border:1px solid #1d4930;border-radius:12px;padding:16px;min-width:0}
+h2{font-size:16px;margin:0 0 14px}
+button{background:#10271a;border:1px solid #286841;color:#d8ffe5;border-radius:8px;padding:9px 12px;cursor:pointer}
+button:hover{border-color:#39ff88}
+button:disabled{opacity:.5;cursor:wait}
+.primary{background:#1ca45b;color:#001b0a;font-weight:bold}
+.danger{border-color:#713b3b;color:#ffb4b4}
+.toolbar,.actions{display:flex;gap:8px;flex-wrap:wrap}
+.list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.cloud{background:#07100a;border:1px solid #1d4930;border-radius:9px;padding:12px;min-width:0}
+.cloud.active{border-color:#39ff88;box-shadow:0 0 10px #39ff8818}
+.cloud p{overflow-wrap:anywhere}
+.muted,.note{color:#9cb4a3;font-size:12px;line-height:1.6}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,360px);gap:14px;align-items:start}
+.framebox{border:1px solid #1d4930;border-radius:10px;overflow:hidden;background:#030604;min-width:0}
+.framehead{padding:12px;background:#102017;border-bottom:1px solid #1d4930;overflow-wrap:anywhere}
+#vmosFrame{display:block;width:100%;height:580px;border:0;background:#fff}
+.emailbox{border:1px solid #1d4930;border-radius:10px;padding:13px;background:#07100a;position:sticky;top:10px;min-width:0}
+.emailbox h3{margin:0 0 12px;color:#39ff88}
+label{display:block;font-size:12px;color:#9cb4a3;margin-top:10px}
+input,select{width:100%;padding:10px;background:#050b07;color:#fff;border:1px solid #34513e;border-radius:7px;margin-top:6px}
+.email-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.email-actions button{padding:9px 5px}
+#inboxList{margin-top:10px;display:grid;gap:9px;max-height:420px;overflow:auto}
+.message{padding:10px;border:1px solid #34513e;border-radius:8px;overflow-wrap:anywhere}
+.message strong{color:#b9ffd1}
+.message p{margin:7px 0}
+.message-body{white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;color:#d3e9da}
+.status{overflow-wrap:anywhere}
+a{color:#39ff88}
+.smallbtn{font-size:12px;padding:6px 8px}
+.empty{padding:12px;border:1px dashed #34513e;border-radius:8px;color:#9cb4a3}
+@media(max-width:800px){
+ .workspace{grid-template-columns:1fr}
+ .emailbox{position:static}
+ #vmosFrame{height:460px}
 }
 </style>
 </head>
-
 <body>
 <header>
-  <div class="brand">CEOTIGU_CLOUD</div>
-  <div class="muted">YOUR PERSONAL CLOUD CONSOLE</div>
-  <nav>
-    <button onclick="go('machine')">Cloud PC</button>
-    <button onclick="go('email')">Email</button>
-  </nav>
+ <div class="logo">⚡ CEOTIGU CLOUD</div>
+ <div class="muted">CLOUD MANAGER · VMOS · REAL TEMP MAIL</div>
 </header>
 
 <main>
-  <section class="panel" id="machine">
-    <h2>// CLOUD PC</h2>
+ <section class="panel">
+  <h2>▣ Quản lí Cloud</h2>
+  <div class="toolbar">
+   <button class="primary" id="create">＋ Tạo Cloud</button>
+   <button id="openSelected">Mở điện thoại</button>
+   <button id="renameSelected">Đổi tên Cloud</button>
+   <button class="danger" id="deleteSelected">Xóa Cloud đang chọn</button>
+  </div>
+  <p class="note">
+   Danh sách Cloud và email được lưu trong trình duyệt này.
+   Tạo Cloud ở đây là tạo hồ sơ quản lý, không phải tự cấp máy ảo VMOS.
+  </p>
+ </section>
 
-    <div class="frame" id="machineFrame">
-      <iframe
-        id="vmosFrame"
-        title="Cloud PC"
-        src="https://vmoscloud.com/"
-        allow="fullscreen"
-        loading="lazy">
-      </iframe>
-      <button
-        id="toggleSize"
-        title="Phóng to / thu nhỏ"
-        onclick="toggleFullscreen()">⛶</button>
+ <section class="panel">
+  <h2>▤ Danh sách Cloud</h2>
+  <div class="list" id="cloudList"></div>
+ </section>
+
+ <section class="panel">
+  <h2>📱 Không gian làm việc</h2>
+  <div class="workspace">
+   <div class="framebox">
+    <div class="framehead" id="vmosTitle">VMOS · Chưa chọn Cloud</div>
+    <iframe id="vmosFrame" title="VMOS Cloud"
+     src="about:blank"
+     allow="fullscreen; clipboard-read; clipboard-write"></iframe>
+   </div>
+
+   <aside class="emailbox">
+    <h3>✉ Email cho Cloud</h3>
+    <div class="note">
+     Hộp thư tạm Mail123 thật. Mỗi Cloud có thể lưu địa chỉ riêng.
     </div>
 
-    <p>
-      <button onclick="openCloudPC()">Mở Cloud PC trong tab mới</button>
+    <label>Cloud đang chọn</label>
+    <input id="selectedCloud" readonly placeholder="Chưa chọn Cloud">
+
+    <label>Địa chỉ email thật</label>
+    <input id="realEmail" readonly placeholder="Bấm Tạo email thật">
+
+    <div class="email-actions">
+     <button class="primary" id="createMailbox">＋ Tạo email thật</button>
+     <button id="copyEmail">Sao chép email</button>
+     <button id="refreshInbox">↻ Làm mới thư</button>
+     <button id="openMail">Mở Mail123</button>
+    </div>
+
+    <p class="note status" id="mailStatus" aria-live="polite">
+     Chọn Cloud rồi bấm “Tạo email thật”.
     </p>
-    <p class="muted" id="cloudStatus"></p>
-  </section>
 
-  <section class="panel" id="email">
-    <h2>// EMAIL INBOX</h2>
-
-    <div class="row">
-      <button id="createBtn" onclick="createMailbox()">＋ Tạo email</button>
-      <button onclick="refreshInbox()">↻ Làm mới</button>
-      <button onclick="copyAddress()">Sao chép địa chỉ</button>
+    <div class="framebox" style="margin-top:12px">
+     <div class="framehead">📨 Hộp thư đến</div>
+     <div id="inboxList" style="padding:10px">
+      <div class="empty">Chưa có hộp thư được chọn.</div>
+     </div>
     </div>
 
-    <div id="mailAddress">Chưa có địa chỉ email.</div>
-    <div id="mailStatus" class="muted" aria-live="polite">Sẵn sàng.</div>
-    <div id="messages"></div>
-
-    <div id="messageDetail" class="message" hidden>
-      <h3 id="messageSubject"></h3>
-      <div class="muted" id="messageFrom"></div>
-      <div id="messageBody"></div>
-    </div>
-  </section>
+    <p class="note">
+     Mail123 là email tạm: thư có thể bị xóa sau 7 ngày và hộp thư
+     có thể được người biết địa chỉ truy cập. Không dùng cho tài khoản
+     quan trọng hoặc thông tin riêng tư.
+    </p>
+   </aside>
+  </div>
+ </section>
 </main>
 
-<footer>CEOTIGU CLOUD</footer>
-<div id="toast" role="status"></div>
-
 <script>
-/*
-  Lưu ý:
-  API bên dưới là cấu hình mẫu. Nếu dịch vụ email không hỗ trợ
-  các đường dẫn này hoặc yêu cầu xác thực, cần chỉnh theo API thực tế.
-*/
-const API_BASE = "https://mail123.fr/api/v1";
-const STORAGE_KEY = "ceotigu_cloud_mailbox";
-
-let mailbox = "";
-let refreshTimer = null;
-let messageCache = [];
+"use strict";
 
 const $ = id => document.getElementById(id);
+const STORE = "ceotigu_cloud_v5";
+const MAIL_API = "https://mail123.fr/api/v1";
+const VMOS_URL = "https://vmoscloud.com/";
 
-function toast(message) {
-  const el = $("toast");
-  el.textContent = message;
-  el.style.display = "block";
-  clearTimeout(el._timer);
-  el._timer = setTimeout(() => {
-    el.style.display = "none";
-  }, 2600);
+let clouds = [];
+let selected = null;
+let busy = false;
+
+try {
+  const saved = JSON.parse(localStorage.getItem(STORE) || "[]");
+  if (Array.isArray(saved)) clouds = saved;
+} catch (e) {
+  clouds = [];
 }
 
-function go(id) {
-  $(id).scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-function openCloudPC() {
-  window.open("https://vmoscloud.com/", "_blank", "noopener");
-}
-
-async function api(path, options = {}) {
-  const response = await fetch(API_BASE + path, {
-    ...options,
-    headers: {
-      "Accept": "application/json",
-      ...(options.headers || {})
-    }
-  });
-
-  if (!response.ok) {
-    throw new Error("Yêu cầu thất bại (" + response.status + ").");
-  }
-
-  return response.json();
-}
-
-function normalizeAddress(data) {
-  return data.address ||
-         data.email ||
-         data.mailbox ||
-         data.data?.address ||
-         "";
-}
-
-function saveMailbox(address) {
-  mailbox = address;
-  localStorage.setItem(STORAGE_KEY, address);
-  $("mailAddress").textContent = address;
-}
-
-function restoreMailbox() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    mailbox = saved;
-    $("mailAddress").textContent = saved;
-    $("mailStatus").textContent = "Đã khôi phục địa chỉ trên thiết bị này.";
-    refreshInbox(true);
-    refreshTimer = setInterval(() => refreshInbox(true), 15000);
-  }
-}
-
-async function createMailbox() {
-  const btn = $("createBtn");
-  btn.disabled = true;
-  $("mailStatus").textContent = "Đang tạo hộp thư…";
-
+function save() {
   try {
-    const data = await api("/mailbox/new", { method: "POST" });
-    const address = normalizeAddress(data);
-
-    if (!address) {
-      throw new Error("Không nhận được địa chỉ email từ dịch vụ.");
-    }
-
-    saveMailbox(address);
-    messageCache = [];
-    $("messages").replaceChildren();
-    $("messageDetail").hidden = true;
-
-    $("mailStatus").textContent = "Hộp thư đã sẵn sàng.";
-
-    if (refreshTimer) clearInterval(refreshTimer);
-    await refreshInbox(true);
-    refreshTimer = setInterval(() => refreshInbox(true), 15000);
-
-  } catch (error) {
-    $("mailStatus").textContent = "Không tạo được email.";
-    toast(error.message || "Có lỗi xảy ra.");
-  } finally {
-    btn.disabled = false;
+    localStorage.setItem(STORE, JSON.stringify(clouds));
+  } catch (e) {
+    setStatus("Không lưu được dữ liệu trình duyệt: " + e.message);
   }
 }
 
-async function refreshInbox(silent = false) {
-  if (!mailbox) {
-    if (!silent) toast("Hãy tạo email trước nhé.");
+function current() {
+  return clouds.find(c => c.id === selected) || null;
+}
+
+function setStatus(message) {
+  $("mailStatus").textContent = message;
+}
+
+function setInboxMessage(message) {
+  const box = $("inboxList");
+  box.replaceChildren();
+  const empty = document.createElement("div");
+  empty.className = "empty";
+  empty.textContent = message;
+  box.append(empty);
+}
+
+function makeButton(label, callback, className = "") {
+  const b = document.createElement("button");
+  b.textContent = label;
+  b.className = className;
+  b.onclick = callback;
+  return b;
+}
+
+function render() {
+  const list = $("cloudList");
+  list.replaceChildren();
+
+  if (!clouds.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Chưa có Cloud. Bấm “Tạo Cloud” để bắt đầu.";
+    list.append(empty);
+  }
+
+  clouds.forEach(c => {
+    const card = document.createElement("div");
+    card.className = "cloud" + (c.id === selected ? " active" : "");
+
+    const title = document.createElement("strong");
+    title.textContent = c.name;
+
+    const id = document.createElement("p");
+    id.className = "muted";
+    id.textContent = "ID: " + c.id;
+
+    const mail = document.createElement("p");
+    mail.className = "muted";
+    mail.textContent = "Email: " + (c.email || "Chưa tạo");
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    actions.append(
+      makeButton("Chọn", () => selectCloud(c.id), c.id === selected ? "primary" : ""),
+      makeButton("Mở điện thoại", () => {
+        selectCloud(c.id);
+        loadVMOS();
+      })
+    );
+
+    card.append(title, id, mail, actions);
+    list.append(card);
+  });
+}
+
+function selectCloud(id) {
+  selected = id;
+  render();
+  syncCloud();
+}
+
+function syncCloud() {
+  const c = current();
+
+  $("selectedCloud").value = c ? c.name : "";
+  $("vmosTitle").textContent = c ? "VMOS · " + c.name : "VMOS · Chưa chọn Cloud";
+  $("realEmail").value = c && c.email ? c.email : "";
+
+  if (!c) {
+    setInboxMessage("Hãy tạo hoặc chọn Cloud.");
+    setStatus("Chọn Cloud rồi bấm “Tạo email thật”.");
     return;
   }
 
-  if (!silent) $("mailStatus").textContent = "Đang kiểm tra thư…";
+  if (c.email) {
+    setStatus("Email đã lưu cho " + c.name + ". Đang tải hộp thư...");
+    refreshInbox();
+  } else {
+    setStatus("Cloud này chưa có email. Bấm “Tạo email thật”.");
+    setInboxMessage("Cloud này chưa có hộp thư.");
+  }
+}
+
+function loadVMOS() {
+  if (!current()) {
+    alert("Hãy tạo hoặc chọn Cloud trước.");
+    return;
+  }
+
+  $("vmosTitle").textContent = "VMOS · " + current().name;
+  $("vmosFrame").src = VMOS_URL;
+  setStatus("Đã yêu cầu mở VMOS. Nếu khung trống hoặc bị chặn, hãy mở VMOS bằng nút bên dưới.");
+}
+
+$("openSelected").onclick = loadVMOS;
+
+$("create").onclick = () => {
+  const c = {
+    id: "CT-" + Date.now().toString(36).toUpperCase(),
+    name: "Cloud " + (clouds.length + 1),
+    email: "",
+    createdAt: new Date().toISOString()
+  };
+
+  clouds.push(c);
+  selected = c.id;
+  save();
+  render();
+  syncCloud();
+};
+
+$("renameSelected").onclick = () => {
+  const c = current();
+  if (!c) return alert("Hãy chọn Cloud trước.");
+
+  const name = prompt("Nhập tên mới cho Cloud:", c.name);
+  if (name === null) return;
+  if (!name.trim()) return alert("Tên Cloud không được để trống.");
+
+  c.name = name.trim();
+  save();
+  render();
+  syncCloud();
+};
+
+$("deleteSelected").onclick = () => {
+  const c = current();
+  if (!c) return alert("Hãy chọn Cloud trước.");
+  if (!confirm("Xóa hồ sơ " + c.name + " và email đã lưu trong danh sách này?")) return;
+
+  clouds = clouds.filter(item => item.id !== c.id);
+  selected = clouds.length ? clouds[0].id : null;
+  save();
+  render();
+  syncCloud();
+  $("vmosFrame").src = "about:blank";
+};
+
+async function api(path) {
+  const response = await fetch(MAIL_API + path, {
+    method: "GET",
+    headers: { "Accept": "application/json" },
+    cache: "no-store"
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok || data.success === false) {
+    throw new Error(data.error || ("HTTP " + response.status));
+  }
+  return data;
+}
+
+$("createMailbox").onclick = async () => {
+  const c = current();
+  if (!c) return alert("Hãy tạo hoặc chọn Cloud trước.");
+  if (busy) return;
+
+  if (c.email && !confirm("Cloud này đã có email. Tạo email mới và thay địa chỉ đang lưu?")) {
+    return;
+  }
+
+  busy = true;
+  $("createMailbox").disabled = true;
+  setStatus("Đang yêu cầu Mail123 tạo hộp thư thật...");
+  setInboxMessage("Đang tạo hộp thư...");
+
+  try {
+    const data = await api("/mailbox/new");
+    const address = data.address || data.mailbox?.address;
+
+    if (!address || typeof address !== "string") {
+      throw new Error("API không trả về địa chỉ email hợp lệ.");
+    }
+
+    c.email = address;
+    c.emailExpiresInDays = data.expires_in_days || null;
+    save();
+    render();
+
+    $("realEmail").value = address;
+    setStatus(
+      "Đã tạo hộp thư: " + address +
+      (c.emailExpiresInDays ? " · Thời hạn lưu thư: " + c.emailExpiresInDays + " ngày." : "")
+    );
+
+    await refreshInbox();
+  } catch (error) {
+    setStatus("Tạo email thất bại: " + error.message);
+    setInboxMessage("Không tạo được hộp thư. Kiểm tra kết nối rồi thử lại.");
+  } finally {
+    busy = false;
+    $("createMailbox").disabled = false;
+  }
+};
+
+$("copyEmail").onclick = async () => {
+  const c = current();
+  const address = c && c.email;
+
+  if (!address) return alert("Cloud đang chọn chưa có email thật.");
+
+  try {
+    await navigator.clipboard.writeText(address);
+    setStatus("Đã sao chép: " + address);
+  } catch (e) {
+    $("realEmail").focus();
+    $("realEmail").select();
+    setStatus("Trình duyệt không cho sao chép tự động. Nhấn Ctrl+C.");
+  }
+};
+
+$("openMail").onclick = () => {
+  window.open("https://mail123.click/", "_blank", "noopener,noreferrer");
+};
+
+$("refreshInbox").onclick = refreshInbox;
+
+async function refreshInbox() {
+  const c = current();
+
+  if (!c || !c.email) {
+    setInboxMessage("Cloud đang chọn chưa có email thật.");
+    setStatus("Tạo email thật trước khi kiểm tra thư.");
+    return;
+  }
+
+  setStatus("Đang kiểm tra thư của " + c.email + "...");
+  setInboxMessage("Đang tải thư...");
+
+  try {
+    const data = await api("/mailbox/" + encodeURIComponent(c.email) + "/messages");
+    const messages = Array.isArray(data.messages)
+      ? data.messages
+      : Array.isArray(data)
+        ? data
+        : [];
+
+    const box = $("inboxList");
+    box.replaceChildren();
+
+    if (!messages.length) {
+      setInboxMessage("Chưa có thư đến.");
+      setStatus("Hộp thư đã kiểm tra. Hiện chưa có thư mới.");
+      return;
+    }
+
+    messages.forEach(message => {
+      const card = document.createElement("div");
+      card.className = "message";
+
+      const subject = document.createElement("strong");
+      subject.textContent = message.subject || "(Không có tiêu đề)";
+
+      const sender = document.createElement("p");
+      sender.className = "muted";
+      sender.textContent = "Từ: " + (message.from || message.sender || "Không rõ");
+
+      card.append(subject, sender);
+
+      if (message.date || message.received_at) {
+        const date = document.createElement("p");
+        date.className = "muted";
+        date.textContent = "Thời gian: " + (message.date || message.received_at);
+        card.append(date);
+      }
+
+      if (message.otp_code) {
+        const otp = document.createElement("p");
+        otp.textContent = "Mã OTP: " + message.otp_code;
+        const copyOtp = makeButton("Sao chép OTP", async () => {
+          try {
+            await navigator.clipboard.writeText(String(message.otp_code));
+            setStatus("Đã sao chép mã OTP.");
+          } catch (e) {
+            setStatus("Không thể sao chép tự động mã OTP.");
+          }
+        }, "smallbtn");
+        card.append(otp, copyOtp);
+      }
+
+      if (message.id !== undefined && message.id !== null) {
+        card.append(document.createTextNode(" "));
+        card.append(makeButton("Đọc thư", () => readMessage(message.id), "smallbtn"));
+      } else if (message.text || message.body) {
+        const body = document.createElement("div");
+        body.className = "message-body";
+        body.textContent = message.text || message.body;
+        card.append(body);
+      }
+
+      box.append(card);
+    });
+
+    setStatus("Đã tải " + messages.length + " thư cho " + c.email + ".");
+  } catch (error) {
+    setInboxMessage("Không tải được thư.");
+    setStatus("Lỗi tải thư: " + error.message);
+  }
+}
+
+async function readMessage(id) {
+  const c = current();
+  if (!c || !c.email) return;
 
   try {
     const data = await api(
-      "/mailbox/" + encodeURIComponent(mailbox) + "/messages"
+      "/mailbox/" + encodeURIComponent(c.email) +
+      "/messages/" + encodeURIComponent(String(id))
     );
 
-    const list = Array.isArray(data)
-      ? data
-      : (data.messages || data.data || []);
+    const message = data.message || data;
+    const dialog = document.createElement("dialog");
+    dialog.style.cssText =
+      "max-width:650px;width:90%;max-height:85vh;overflow:auto;" +
+      "background:#0b1510;color:#e6fff0;border:1px solid #39ff88;" +
+      "border-radius:12px;padding:18px";
 
-    messageCache = list;
-    renderMessages(list);
+    const title = document.createElement("h3");
+    title.textContent = message.subject || "Nội dung thư";
 
-    $("mailStatus").textContent =
-      "Cập nhật lúc " + new Date().toLocaleTimeString("vi-VN");
-
-  } catch (error) {
-    $("mailStatus").textContent = "Chưa thể tải thư. Hãy thử làm mới.";
-    if (!silent) toast(error.message || "Không tải được hộp thư.");
-  }
-}
-
-function renderMessages(list) {
-  const host = $("messages");
-  host.replaceChildren();
-
-  if (!list.length) {
-    const empty = document.createElement("div");
-    empty.className = "message muted";
-    empty.textContent = "Chưa có thư mới.";
-    host.append(empty);
-    return;
-  }
-
-  list.forEach((message, index) => {
-    const card = document.createElement("div");
-    card.className = "message";
-
-    const title = document.createElement("strong");
-    title.textContent =
-      message.subject || message.title || "(Không có tiêu đề)";
-
-    const from = document.createElement("div");
+    const from = document.createElement("p");
     from.className = "muted";
-    from.textContent =
-      "Người gửi: " + (message.from || message.sender || "Không rõ");
+    from.textContent = "Từ: " + (message.from || message.sender || "Không rõ");
 
-    const date = document.createElement("div");
-    date.className = "muted";
-    date.textContent = message.date || message.created_at || "";
+    const body = document.createElement("pre");
+    body.className = "message-body";
+    body.textContent =
+      message.text || message.body || message.content ||
+      "Không có nội dung văn bản. Vui lòng làm mới thu·.";
 
-    const open = document.createElement("button");
-    open.textContent = "Đọc thư";
-    open.addEventListener("click", () => readMessage(message, index));
+    const close = makeButton("Đóng", () => dialog.close(), "primary");
 
-    card.append(title, from, date, open);
-    host.append(card);
-  });
-}
+    dialog.append(title, from, body);
 
-async function readMessage(message, index) {
-  const detail = $("messageDetail");
-  detail.hidden = false;
-  $("messageSubject").textContent =
-    message.subject || message.title || "Nội dung thư";
-  $("messageFrom").textContent =
-    "Người gửi: " + (message.from || message.sender || "Không rõ");
-  $("messageBody").textContent = "Đang tải nội dung thư…";
-
-  try {
-    const id = message.id || message.message_id;
-    let result = message;
-
-    if (id != null && mailbox) {
-      const data = await api(
-        "/mailbox/" + encodeURIComponent(mailbox) +
-        "/messages/" + encodeURIComponent(id)
-      );
-      result = data.message || data.data || data;
+    if (message.otp_code) {
+      const otp = document.createElement("p");
+      otp.textContent = "Mã OTP: " + message.otp_code;
+      dialog.append(otp);
     }
 
-    $("messageSubject").textContent =
-      result.subject || result.title || "Nội dung thư";
-    $("messageFrom").textContent =
-      "Người gửi: " + (result.from || result.sender || "Không rõ");
-
-    const body = result.text || result.body || result.content ||
-                 result.html || "";
-
-    $("messageBody").textContent =
-      body || "Không có nội dung văn bản.";
-
-    detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
-
+    dialog.append(close);
+    document.body.append(dialog);
+    dialog.addEventListener("close", () => dialog.remove(), { once: true });
+    dialog.showModal();
   } catch (error) {
-    $("messageBody").textContent = "Không đọc được thư. Hãy thử lại.";
+    setStatus("Không đọc được thư: " + error.message);
   }
 }
 
-async function copyAddress() {
-  if (!mailbox) {
-    toast("Chưa có địa chỉ để sao chép.");
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(mailbox);
-    toast("Đã sao chép địa chỉ email.");
-  } catch {
-    toast("Trình duyệt không cho phép sao chép tự động.");
-  }
+if (clouds.length) {
+  selected = clouds[0].id;
 }
 
-async function toggleFullscreen() {
-  const frame = $("machineFrame");
-
-  try {
-    if (document.fullscreenElement === frame) {
-      await document.exitFullscreen();
-    } else {
-      await frame.requestFullscreen();
-    }
-  } catch {
-    toast("Không thể bật toàn màn hình trên trình duyệt này.");
-  }
-}
-
-document.addEventListener("fullscreenchange", () => {
-  $("toggleSize").textContent =
-    document.fullscreenElement === $("machineFrame") ? "↙" : "⛶";
-});
-
-restoreMailbox();
+render();
+syncCloud();
 </script>
 </body>
 </html>
