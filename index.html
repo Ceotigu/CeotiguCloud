@@ -3,163 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEOTIGU CLOUD - SECURE LOGIN & DASHBOARD</title>
+    <title>CEOTIGU CLOUD - CYBERPUNK DASHBOARD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: monospace; }
-        body { background: #0a0a12; color: #00f3ff; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; }
+        body { background: #030712; color: #00f3ff; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        /* Login Screen */
-        #loginScreen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #05050a; display: flex; justify-content: center; align-items: center; z-index: 1000;
+        /* Top Navigation Bar */
+        header { 
+            background: rgba(5, 8, 22, 0.95); 
+            padding: 12px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid #00f3ff;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            z-index: 10;
         }
-        .login-box {
-            background: #121225; border: 2px solid #00f3ff; padding: 30px; border-radius: 8px;
-            width: 320px; box-shadow: 0 0 20px rgba(0, 243, 255, 0.3); text-align: center;
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 18px; text-shadow: 0 0 8px #00f3ff; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+        
+        .btn { 
+            background: transparent; 
+            border: 1px solid #00f3ff; 
+            color: #00f3ff; 
+            padding: 8px 16px; 
+            cursor: pointer; 
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700; 
+            font-size: 11px;
+            margin-left: 8px; 
+            transition: all 0.2s;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
         }
-        .login-box h2 { margin-bottom: 20px; font-size: 18px; text-shadow: 0 0 8px #00f3ff; }
-        .login-input {
-            width: 100%; background: #0a0a12; border: 1px solid #00f3ff55; color: #fff;
-            padding: 10px; margin-bottom: 15px; border-radius: 4px; outline: none;
-        }
-        .login-input:focus { border-color: #00f3ff; }
+        .btn:hover { background: #00f3ff; color: #000; box-shadow: 0 0 12px #00f3ff; }
+        .btn.purple { border-color: #bc13fe; color: #bc13fe; }
+        .btn.purple:hover { background: #bc13fe; color: #fff; box-shadow: 0 0 12px #bc13fe; }
 
-        /* Dashboard Layout */
-        header { background: #121225; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00f3ff; }
-        h1 { font-size: 18px; text-shadow: 0 0 8px #00f3ff; }
-        .btn { background: transparent; border: 1px solid #00f3ff; color: #00f3ff; padding: 6px 12px; cursor: pointer; font-weight: bold; margin-left: 5px; }
-        .btn:hover { background: #00f3ff; color: #000; }
-        .main { display: flex; flex: 1; height: calc(100vh - 50px); }
-        .sidebar { width: 340px; background: #0f0f1d; border-right: 1px solid #00f3ff33; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-        .content { flex: 1; background: #05050a; position: relative; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .mail-card { background: #181830; border: 1px solid #00f3ff55; padding: 10px; border-radius: 4px; }
-        .mail-card div { font-size: 12px; margin-bottom: 6px; word-break: break-all; color: #fff; }
-        .role-badge { background: #ff0055; color: #fff; padding: 2px 6px; font-size: 10px; border-radius: 3px; margin-left: 10px; }
-        .role-admin { background: #00f3ff; color: #000; }
+        /* Main Workspace */
+        .main { display: flex; flex: 1; height: calc(100vh - 60px); }
+        
+        .sidebar { 
+            width: 380px; 
+            background: rgba(10, 15, 30, 0.95); 
+            border-right: 1px solid rgba(0, 243, 255, 0.3); 
+            padding: 20px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+        
+        .content { 
+            flex: 1; 
+            background: #03050c; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 40px; 
+            text-align: center;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(188, 19, 254, 0.1) 0%, transparent 70%),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 25px 25px, 25px 25px;
+        }
+
+        .mail-card { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid rgba(0, 243, 255, 0.3); 
+            padding: 14px; 
+            border-radius: 6px; 
+            transition: 0.2s;
+        }
+        .mail-card:hover { border-color: #bc13fe; box-shadow: 0 0 10px rgba(188, 19, 254, 0.3); }
+        .mail-address { font-family: monospace; color: #00f3ff; font-size: 13px; margin-bottom: 8px; word-break: break-all; }
+
+        .cyber-panel {
+            background: rgba(10, 15, 30, 0.85);
+            border: 1px solid var(--neon-blue, #00f3ff);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 520px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Màn hình Login -->
-    <div id="loginScreen">
-        <div class="login-box">
-            <h2>⚡ CEOTIGU CLOUD LOGIN</h2>
-            <input type="text" id="usernameInput" class="login-input" placeholder="Nhập tên tài khoản (vd: admin hoặc user)">
-            <input type="password" id="passwordInput" class="login-input" placeholder="Mật khẩu (admin gõ: ceotigu123)">
-            <button class="btn" style="width:100%; padding: 10px;" onclick="handleLogin()">ĐĂNG NHẬP HỆ THỐNG</button>
-            <div style="font-size:10px; color:#888; margin-top:15px;">
-                * Admin: <b>admin</b> / Pass: <b>ceotigu123</b> (Vô hạn Gmail)<br>
-                * User thường: Tên bất kỳ (Tối đa 5 Gmail)
-            </div>
-        </div>
-    </div>
-
-    <!-- Giao diện Dashboard chính -->
     <header>
-        <h1>⚡ CEOTIGU CLOUD <span id="userRoleBadge" class="role-badge">USER</span></h1>
+        <h1>⚡ CEOTIGU CLOUD DASHBOARD</h1>
         <div>
-            <span id="limitInfo" style="font-size: 12px; margin-right: 10px; color: #ff0055;">Đã dùng: 0/5</span>
-            <button class="btn" onclick="addMail()">+ TẠO GMAIL/CLOUD</button>
-            <button class="btn" onclick="openVMOS()">MỞ VMOS</button>
-            <button class="btn" style="border-color:#ff0055; color:#ff0055;" onclick="logout()">ĐĂNG XUẤT</button>
+            <button class="btn" onclick="addMail()">+ TẠO MAIL MỚI</button>
+            <button class="btn purple" onclick="openVMOS()">💻 MỞ VMOS CLOUD</button>
         </div>
     </header>
 
     <div class="main">
         <div class="sidebar">
-            <h3 style="font-size: 14px; color: #00f3ff;">QUẢN LÝ TÀI KHOẢN & CLOUD</h3>
+            <h3 style="font-family: 'Orbitron', sans-serif; font-size: 13px; color: #00f3ff; letter-spacing: 1px;">DANH SÁCH HÒM THƯ</h3>
             <div id="mailList"></div>
         </div>
+        
         <div class="content">
-            <iframe id="viewFrame" src="https://mail.google.com"></iframe>
+            <div class="cyber-panel">
+                <h2 style="font-family: 'Orbitron', sans-serif; margin-bottom: 12px; color: #00f3ff; font-size: 20px; text-shadow: 0 0 8px #00f3ff;">HỆ THỐNG ĐIỀU KHIỂN SẴN SÀNG</h2>
+                <p style="font-size: 15px; color: #aaa; line-height: 1.6; margin-bottom: 25px;">
+                    Các trang web quản lý thư từ và máy chủ đám mây có cơ chế chống nhúng khung hình (iframe). Toàn hãy quản lý danh sách bên trái, bấm <b>COPY</b> địa chỉ hoặc dùng nút bên dưới để mở hòm thư làm việc mượt mà nhất!
+                </p>
+                <button class="btn purple" style="padding: 12px 24px; font-size: 12px;" onclick="openTmailor()">🌐 MỞ TRANG TMAILOR TRỰC TIẾP</button>
+            </div>
         </div>
     </div>
 
     <script>
-        let currentUser = JSON.parse(localStorage.getItem('ceotigu_current_user')) || null;
-        let gmails = JSON.parse(localStorage.getItem('ceotigu_user_mails')) || [];
-
-        function handleLogin() {
-            const user = document.getElementById('usernameInput').value.trim();
-            const pass = document.getElementById('passwordInput').value.trim();
-
-            if (!user) {
-                alert('Vui lòng nhập tên tài khoản!');
-                return;
-            }
-
-            // Kiểm tra phân quyền Admin
-            if (user.toLowerCase() === 'admin' && pass === 'ceotigu123') {
-                currentUser = { name: 'Admin Ceotigu', isAdmin: true };
-            } else {
-                currentUser = { name: user, isAdmin: false };
-            }
-
-            localStorage.setItem('ceotigu_current_user', JSON.stringify(currentUser));
-            checkAuth();
-        }
-
-        function checkAuth() {
-            if (currentUser) {
-                document.getElementById('loginScreen').style.display = 'none';
-                const badge = document.getElementById('userRoleBadge');
-                if (currentUser.isAdmin) {
-                    badge.innerText = 'ADMIN (VÔ HẠN)';
-                    badge.className = 'role-badge role-admin';
-                } else {
-                    badge.innerText = 'USER (' + currentUser.name + ')';
-                    badge.className = 'role-badge';
-                }
-                render();
-            } else {
-                document.getElementById('loginScreen').style.display = 'flex';
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('ceotigu_current_user');
-            currentUser = null;
-            checkAuth();
-        }
+        let mails = JSON.parse(localStorage.getItem('ceotigu_list')) || [
+            'ceotigucloud1@tmailor.com',
+            'ceotigucloud2@tmailor.com'
+        ];
 
         function render() {
             const list = document.getElementById('mailList');
             list.innerHTML = '';
-            
-            let limitText = currentUser.isAdmin ? 'Vô hạn' : `${gmails.length}/5`;
-            document.getElementById('limitInfo').innerText = `Cloud: ${limitText}`;
-
-            gmails.forEach((email, i) => {
+            mails.forEach((m, i) => {
                 list.innerHTML += `
                     <div class="mail-card">
-                        <div><b>#${i + 1}:</b> ${email}</div>
-                        <div style="display:flex; gap:4px;">
-                            <button class="btn" style="font-size:10px; padding:3px 6px;" onclick="copyText('${email}')">COPY</button>
-                            <button class="btn" style="font-size:10px; padding:3px 6px;" onclick="openMail()">MỞ HÒM THƯ</button>
-                            <button class="btn" style="font-size:10px; padding:3px 6px; border-color:#ff0055; color:#ff0055;" onclick="deleteGmail(${i})">XÓA</button>
+                        <div class="mail-address"><b>#${i + 1}:</b> ${m}</div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn" style="padding:4px 8px; font-size:10px;" onclick="copyText('${m}')">COPY</button>
+                            <button class="btn purple" style="padding:4px 8px; font-size:10px;" onclick="openTmailor()">MỞ WEB</button>
+                            <button class="btn" style="padding:4px 8px; font-size:10px; border-color:#ff0055; color:#ff0055;" onclick="deleteMail(${i})">XÓA</button>
                         </div>
                     </div>`;
             });
-            localStorage.setItem('ceotigu_user_mails', JSON.stringify(gmails));
+            localStorage.setItem('ceotigu_list', JSON.stringify(mails));
         }
 
         function addMail() {
-            // Kiểm tra giới hạn cho nick thường (tối đa 5 cái)
-            if (!currentUser.isAdmin && gmails.length >= 5) {
-                alert('⚠️ Tài khoản thường chỉ được tạo tối đa 5 Gmail/Cloud! Nâng cấp Admin để tạo vô hạn.');
-                return;
-            }
-
-            const newMail = prompt('Nhập địa chỉ Gmail hoặc tên Cloud muốn quản lý:');
-            if (newMail && newMail.trim() !== '') {
-                gmails.push(newMail.trim());
-                render();
-            }
+            const newMail = `ceotigucloud${mails.length + 1}@tmailor.com`;
+            mails.push(newMail);
+            render();
         }
 
-        function deleteGmail(index) {
-            gmails.splice(index, 1);
+        function deleteMail(index) {
+            mails.splice(index, 1);
             render();
         }
 
@@ -168,16 +156,15 @@
             alert('Đã copy: ' + txt);
         }
 
-        function openMail() {
-            document.getElementById('viewFrame').src = 'https://mail.google.com';
+        function openTmailor() {
+            window.open('https://tmailor.com/vi', '_blank');
         }
 
         function openVMOS() {
-            document.getElementById('viewFrame').src = 'https://cloud.vmos.com';
+            window.open('https://cloud.vmos.com', '_blank');
         }
 
-        // Chạy kiểm tra đăng nhập lúc đầu
-        checkAuth();
+        render();
     </script>
 </body>
 </html>
