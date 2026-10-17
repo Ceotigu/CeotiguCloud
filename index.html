@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -8,13 +7,13 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#050a07;color:#e6fff0;font:14px Arial,sans-serif}
-header{padding:18px 22px;border-bottom:1px solid #1d4930;background:#08120b}
-.logo{font-size:23px;font-weight:bold;color:#39ff88}
+header{padding:18px 22px;border-bottom:1px solid #1d4930;background:#08120b;display:flex;justify-content:between;align-items:center;flex-wrap:wrap;gap:12px}
+.logo{font-size:23px;font-weight:bold;color:#39ff88;text-shadow:0 0 8px #39ff8880}
 main{max-width:1400px;margin:auto;padding:18px;display:grid;gap:16px}
 .panel{background:#0b1510;border:1px solid #1d4930;border-radius:12px;padding:16px;min-width:0}
-h2{font-size:16px;margin:0 0 14px}
-button{background:#10271a;border:1px solid #286841;color:#d8ffe5;border-radius:8px;padding:9px 12px;cursor:pointer}
-button:hover{border-color:#39ff88}
+h2{font-size:16px;margin:0 0 14px;color:#39ff88}
+button{background:#10271a;border:1px solid #286841;color:#d8ffe5;border-radius:8px;padding:9px 12px;cursor:pointer;font-family:monospace;transition:0.2s}
+button:hover{border-color:#39ff88;box-shadow:0 0 8px #39ff8850}
 button:disabled{opacity:.5;cursor:wait}
 .primary{background:#1ca45b;color:#001b0a;font-weight:bold}
 .danger{border-color:#713b3b;color:#ffb4b4}
@@ -31,7 +30,8 @@ button:disabled{opacity:.5;cursor:wait}
 .emailbox{border:1px solid #1d4930;border-radius:10px;padding:13px;background:#07100a;position:sticky;top:10px;min-width:0}
 .emailbox h3{margin:0 0 12px;color:#39ff88}
 label{display:block;font-size:12px;color:#9cb4a3;margin-top:10px}
-input,select{width:100%;padding:10px;background:#050b07;color:#fff;border:1px solid #34513e;border-radius:7px;margin-top:6px}
+input,select{width:100%;padding:10px;background:#050b07;color:#39ff88;border:1px solid #1d4930;border-radius:7px;margin-top:6px;font-family:monospace}
+input:focus,select:focus{outline:none;border-color:#39ff88;box-shadow:0 0 5px #39ff8850}
 .email-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
 .email-actions button{padding:9px 5px}
 #inboxList{margin-top:10px;display:grid;gap:9px;max-height:420px;overflow:auto}
@@ -40,22 +40,76 @@ input,select{width:100%;padding:10px;background:#050b07;color:#fff;border:1px so
 .message p{margin:7px 0}
 .message-body{white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;color:#d3e9da}
 .status{overflow-wrap:anywhere}
-a{color:#39ff88}
+a{color:#39ff88;text-decoration:none}
+a:hover{text-decoration:underline}
 .smallbtn{font-size:12px;padding:6px 8px}
 .empty{padding:12px;border:1px dashed #34513e;border-radius:8px;color:#9cb4a3}
-@media(max-width:800px){
- .workspace{grid-template-columns:1fr}
- .emailbox{position:static}
- #vmosFrame{height:460px}
+
+/* --- HACKER LOG-IN SCREEN INTERFACE --- */
+.auth-wrapper {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle, #091a10 0%, #020503 100%);
+  display: flex; align-items: center; justify-content: center; z-index: 9999;
 }
+.auth-box {
+  width: 100%; max-width: 420px; padding: 25px;
+  background: #060d09; border: 2px solid #1d4930; border-radius: 4px;
+  box-shadow: 0 0 20px rgba(57,255,136,0.15); position: relative; overflow: hidden;
+}
+.auth-box::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, #39ff88, transparent);
+  animation: scanlines 2s linear infinite;
+}
+@keyframes scanlines { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+.auth-glitch {
+  font-family: monospace; font-size: 20px; text-align: center;
+  color: #39ff88; font-weight: bold; letter-spacing: 2px; margin-bottom: 20px;
+  text-shadow: 0 0 5px rgba(57,255,136,0.6);
+}
+.auth-toggle { text-align: center; margin-top: 20px; font-size: 12px; color: #789c84; }
+.user-info { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+.badge { background: #1d4930; color: #39ff88; padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: bold; }
+.badge.admin { background: #713b3b; color: #ffb4b4; border: 1px solid #ff4e4e; }
+.hidden { display: none !important; }
+.terminal-text { font-family: monospace; color: #39ff88; font-size: 11px; margin-bottom: 10px; opacity: 0.7; }
 </style>
 </head>
 <body>
-<header>
- <div class="logo">⚡ CEOTIGU CLOUD</div>
- <div class="muted">CLOUD MANAGER · VMOS · REAL TEMP MAIL</div>
-</header>
 
+<!-- Giao diện Đăng nhập / Đăng ký Hacker -->
+<div id="authScreen" class="auth-wrapper">
+  <div class="auth-box">
+    <div class="terminal-text">> SECURE SYSTEM INITIALIZATION...</div>
+    <div class="terminal-text">> BYPASS CORE PROTOCOL: OK</div>
+    <div id="authGlitch" class="auth-glitch">SYS.LOGIN_BETA_V5</div>
+    <form id="authForm" onsubmit="handleAuth(event)">
+      <label style="color:#39ff88; font-family:monospace;">[//IDENTITY_USER]</label>
+      <input type="text" id="authUser" required placeholder="Root access name..." autocomplete="off">
+      <label style="color:#39ff88; font-family:monospace; margin-top:15px;">[//ACCESS_PASSWORD]</label>
+      <input type="password" id="authPass" required placeholder="Passphrase...">
+      <button type="submit" class="primary" style="width:100%; margin-top:25px; padding:12px; text-transform:uppercase; letter-spacing:1px;" id="authBtn">Execute Login</button>
+    </form>
+    <div class="auth-toggle">
+      <span id="authToggleText">Chưa ghi nhận mã ID?</span> 
+      <a href="#" id="authToggleLink" onclick="toggleAuthMode(event)">TẠO IDENTITY MỚI</a>
+    </div>
+  </div>
+</div>
+
+<!-- Giao diện ứng dụng chính -->
+<div id="appScreen" class="hidden">
+<header>
+ <div>
+   <div class="logo">⚡ CEOTIGU CLOUD</div>
+   <div class="muted">CLOUD MANAGER · VMOS · REAL TEMP MAIL</div>
+ </div>
+ <div class="user-info">
+   <span id="userDisplay">Tài khoản: --</span>
+   <span id="roleBadge" class="badge">Người thường</span>
+   <button class="smallbtn danger" onclick="logout()">Đăng xuất</button>
+ </div>
+</header>
 <main>
  <section class="panel">
   <h2>▣ Quản lí Cloud</h2>
@@ -65,17 +119,14 @@ a{color:#39ff88}
    <button id="renameSelected">Đổi tên Cloud</button>
    <button class="danger" id="deleteSelected">Xóa Cloud đang chọn</button>
   </div>
-  <p class="note">
+  <p class="note" id="limitNote">
    Danh sách Cloud và email được lưu trong trình duyệt này.
-   Tạo Cloud ở đây là tạo hồ sơ quản lý, không phải tự cấp máy ảo VMOS.
   </p>
  </section>
-
  <section class="panel">
-  <h2>▤ Danh sách Cloud</h2>
+  <h2>▤ Danh sách Cloud (<span id="cloudCount">0</span>)</h2>
   <div class="list" id="cloudList"></div>
  </section>
-
  <section class="panel">
   <h2>📱 Không gian làm việc</h2>
   <div class="workspace">
@@ -85,37 +136,30 @@ a{color:#39ff88}
      src="about:blank"
      allow="fullscreen; clipboard-read; clipboard-write"></iframe>
    </div>
-
    <aside class="emailbox">
     <h3>✉ Email cho Cloud</h3>
     <div class="note">
      Hộp thư tạm Mail123 thật. Mỗi Cloud có thể lưu địa chỉ riêng.
     </div>
-
     <label>Cloud đang chọn</label>
     <input id="selectedCloud" readonly placeholder="Chưa chọn Cloud">
-
     <label>Địa chỉ email thật</label>
     <input id="realEmail" readonly placeholder="Bấm Tạo email thật">
-
     <div class="email-actions">
      <button class="primary" id="createMailbox">＋ Tạo email thật</button>
      <button id="copyEmail">Sao chép email</button>
      <button id="refreshInbox">↻ Làm mới thư</button>
      <button id="openMail">Mở Mail123</button>
     </div>
-
     <p class="note status" id="mailStatus" aria-live="polite">
      Chọn Cloud rồi bấm “Tạo email thật”.
     </p>
-
     <div class="framebox" style="margin-top:12px">
      <div class="framehead">📨 Hộp thư đến</div>
      <div id="inboxList" style="padding:10px">
       <div class="empty">Chưa có hộp thư được chọn.</div>
      </div>
     </div>
-
     <p class="note">
      Mail123 là email tạm: thư có thể bị xóa sau 7 ngày và hộp thư
      có thể được người biết địa chỉ truy cập. Không dùng cho tài khoản
@@ -125,31 +169,122 @@ a{color:#39ff88}
   </div>
  </section>
 </main>
+</div>
 
 <script>
 "use strict";
-
 const $ = id => document.getElementById(id);
 const STORE = "ceotigu_cloud_v5";
+const AUTH_STORE = "ceotigu_auth_users";
+const SESSION_STORE = "ceotigu_current_session";
 const MAIL_API = "https://mail123.fr/api/v1";
 const VMOS_URL = "https://vmoscloud.com/";
 
 let clouds = [];
 let selected = null;
 let busy = false;
+let isRegisterMode = false;
+let currentUser = null;
 
-try {
-  const saved = JSON.parse(localStorage.getItem(STORE) || "[]");
-  if (Array.isArray(saved)) clouds = saved;
-} catch (e) {
-  clouds = [];
+if (!localStorage.getItem(AUTH_STORE)) {
+  localStorage.setItem(AUTH_STORE, JSON.stringify([
+    { username: "Ceotigu", password: "123", role: "admin" }
+  ]));
+}
+
+function toggleAuthMode(e) {
+  e.preventDefault();
+  isRegisterMode = !isRegisterMode;
+  if (isRegisterMode) {
+    $("authGlitch").textContent = "SYS.REGISTER_NEW";
+    $("authBtn").textContent = "Execute Registration";
+    $("authToggleText").textContent = "Đã cấu hình mã ID?";
+    $("authToggleLink").textContent = "LOG SYSTEM IN";
+  } else {
+    $("authGlitch").textContent = "SYS.LOGIN_BETA_V5";
+    $("authBtn").textContent = "Execute Login";
+    $("authToggleText").textContent = "Chưa ghi nhận mã ID?";
+    $("authToggleLink").textContent = "TẠO IDENTITY MỚI";
+  }
+}
+
+function handleAuth(e) {
+  e.preventDefault();
+  const user = $("authUser").value.trim();
+  const pass = $("authPass").value;
+  if (!user || !pass) return alert("Vui lòng nhập đủ thông tin.");
+
+  let users = JSON.parse(localStorage.getItem(AUTH_STORE));
+
+  if (isRegisterMode) {
+    if (users.some(u => u.username.toLowerCase() === user.toLowerCase())) {
+      return alert("ID này đã tồn tại trong Core!");
+    }
+    const role = (user.toLowerCase() === "ceotigu") ? "admin" : "user";
+    users.push({ username: user, password: pass, role: role });
+    localStorage.setItem(AUTH_STORE, JSON.stringify(users));
+    alert("Đăng ký danh tính Root thành công!");
+    isRegisterMode = false;
+    toggleAuthMode({ preventDefault: () => {} });
+  } else {
+    const found = users.find(u => u.username.toLowerCase() === user.toLowerCase() && u.password === pass);
+    if (!found) return alert("Access Denied: Sai danh tính hoặc mã khóa!");
+    
+    if (found.username.toLowerCase() === "ceotigu") found.role = "admin";
+
+    localStorage.setItem(SESSION_STORE, JSON.stringify(found));
+    initSession();
+  }
+}
+
+function initSession() {
+  const session = localStorage.getItem(SESSION_STORE);
+  if (!session) {
+    $("authScreen").classList.remove("hidden");
+    $("appScreen").classList.add("hidden");
+    return;
+  }
+  currentUser = JSON.parse(session);
+  $("authScreen").classList.add("hidden");
+  $("appScreen").classList.remove("hidden");
+
+  $("userDisplay").textContent = "Identity: " + currentUser.username;
+  const badge = $("roleBadge");
+  if (currentUser.role === "admin") {
+    badge.textContent = "👑 Admin (Vô hạn máy)";
+    badge.className = "badge admin";
+    $("limitNote").textContent = "Hệ thống mở khóa tối đa cho quản trị viên Ceotigu.";
+  } else {
+    badge.textContent = "👤 Thành viên (Max 4 máy)";
+    badge.className = "badge";
+    $("limitNote").textContent = "Giới hạn giao thức truyền tải: Tối đa 4 kết nối cùng lúc.";
+  }
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE + "_" + currentUser.username.toLowerCase()) || "[]");
+    clouds = Array.isArray(saved) ? saved : [];
+  } catch (e) {
+    clouds = [];
+  }
+
+  selected = clouds.length ? clouds[0].id : null;
+  render();
+  syncCloud();
+}
+
+function logout() {
+  localStorage.removeItem(SESSION_STORE);
+  $("authUser").value = "";
+  $("authPass").value = "";
+  $("vmosFrame").src = "about:blank";
+  initSession();
 }
 
 function save() {
   try {
-    localStorage.setItem(STORE, JSON.stringify(clouds));
+    localStorage.setItem(STORE + "_" + currentUser.username.toLowerCase(), JSON.stringify(clouds));
   } catch (e) {
-    setStatus("Không lưu được dữ liệu trình duyệt: " + e.message);
+    setStatus("Lỗi lưu cấu hình: " + e.message);
   }
 }
 
@@ -179,34 +314,28 @@ function makeButton(label, callback, className = "") {
 }
 
 function render() {
+  $("cloudCount").textContent = clouds.length;
   const list = $("cloudList");
   list.replaceChildren();
-
   if (!clouds.length) {
     const empty = document.createElement("div");
     empty.className = "empty";
-    empty.textContent = "Chưa có Cloud. Bấm “Tạo Cloud” để bắt đầu.";
+    empty.textContent = "Chưa tìm thấy kết nối Cloud hoạt động.";
     list.append(empty);
   }
-
   clouds.forEach(c => {
     const card = document.createElement("div");
     card.className = "cloud" + (c.id === selected ? " active" : "");
-
     const title = document.createElement("strong");
     title.textContent = c.name;
-
     const id = document.createElement("p");
     id.className = "muted";
     id.textContent = "ID: " + c.id;
-
     const mail = document.createElement("p");
     mail.className = "muted";
-    mail.textContent = "Email: " + (c.email || "Chưa tạo");
-
+    mail.textContent = "Proxy Mail: " + (c.email || "Null");
     const actions = document.createElement("div");
     actions.className = "actions";
-
     actions.append(
       makeButton("Chọn", () => selectCloud(c.id), c.id === selected ? "primary" : ""),
       makeButton("Mở điện thoại", () => {
@@ -214,7 +343,6 @@ function render() {
         loadVMOS();
       })
     );
-
     card.append(title, id, mail, actions);
     list.append(card);
   });
@@ -228,47 +356,50 @@ function selectCloud(id) {
 
 function syncCloud() {
   const c = current();
-
   $("selectedCloud").value = c ? c.name : "";
-  $("vmosTitle").textContent = c ? "VMOS · " + c.name : "VMOS · Chưa chọn Cloud";
+  $("vmosTitle").textContent = c ? "VMOS TERMINAL · " + c.name : "VMOS · Idle";
   $("realEmail").value = c && c.email ? c.email : "";
-
   if (!c) {
-    setInboxMessage("Hãy tạo hoặc chọn Cloud.");
-    setStatus("Chọn Cloud rồi bấm “Tạo email thật”.");
+    setInboxMessage("Yêu cầu chọn kênh kết nối.");
+    setStatus("Hệ thống ở trạng thái chờ...");
     return;
   }
-
   if (c.email) {
-    setStatus("Email đã lưu cho " + c.name + ". Đang tải hộp thư...");
+    setStatus("Đang đồng bộ hộp thư " + c.email + "...");
     refreshInbox();
   } else {
-    setStatus("Cloud này chưa có email. Bấm “Tạo email thật”.");
-    setInboxMessage("Cloud này chưa có hộp thư.");
+    setStatus("Chưa thiết lập Proxy Mail cho kênh này.");
+    setInboxMessage("Danh sách thư trống.");
   }
 }
 
 function loadVMOS() {
-  if (!current()) {
-    alert("Hãy tạo hoặc chọn Cloud trước.");
+  const c = current();
+  if (!c) {
+    alert("Vui lòng chọn cổng Cloud.");
     return;
   }
-
-  $("vmosTitle").textContent = "VMOS · " + current().name;
-  $("vmosFrame").src = VMOS_URL;
-  setStatus("Đã yêu cầu mở VMOS. Nếu khung trống hoặc bị chặn, hãy mở VMOS bằng nút bên dưới.");
+  $("vmosTitle").textContent = "VMOS PIPELINE · " + c.name;
+  $("vmosFrame").src = VMOS_URL + "?profile=" + encodeURIComponent(c.browser_profile_id);
+  setStatus("Đang tải luồng truyền dữ liệu biệt lập: " + c.browser_profile_id);
 }
 
 $("openSelected").onclick = loadVMOS;
 
 $("create").onclick = () => {
+  if (currentUser.role !== "admin" && clouds.length >= 4) {
+    alert("Connection Limit Exceeded! Tài khoản thường bị giới hạn 4 luồng.");
+    return;
+  }
+
+  const cloudId = "CT-" + Date.now().toString(36).toUpperCase();
   const c = {
-    id: "CT-" + Date.now().toString(36).toUpperCase(),
-    name: "Cloud " + (clouds.length + 1),
+    id: cloudId,
+    name: "Cloud Pipeline " + (clouds.length + 1),
     email: "",
+    browser_profile_id: "profile_" + Math.random().toString(36).substring(2, 11) + "_" + cloudId,
     createdAt: new Date().toISOString()
   };
-
   clouds.push(c);
   selected = c.id;
   save();
@@ -278,12 +409,10 @@ $("create").onclick = () => {
 
 $("renameSelected").onclick = () => {
   const c = current();
-  if (!c) return alert("Hãy chọn Cloud trước.");
-
-  const name = prompt("Nhập tên mới cho Cloud:", c.name);
+  if (!c) return alert("Vui lòng chọn cổng.");
+  const name = prompt("Nhập định danh mới:", c.name);
   if (name === null) return;
-  if (!name.trim()) return alert("Tên Cloud không được để trống.");
-
+  if (!name.trim()) return alert("Tên không được để trống.");
   c.name = name.trim();
   save();
   render();
@@ -292,9 +421,8 @@ $("renameSelected").onclick = () => {
 
 $("deleteSelected").onclick = () => {
   const c = current();
-  if (!c) return alert("Hãy chọn Cloud trước.");
-  if (!confirm("Xóa hồ sơ " + c.name + " và email đã lưu trong danh sách này?")) return;
-
+  if (!c) return alert("Vui lòng chọn cổng.");
+  if (!confirm("Hủy bỏ hoàn toàn cấu hình luồng " + c.name + "?")) return;
   clouds = clouds.filter(item => item.id !== c.id);
   selected = clouds.length ? clouds[0].id : null;
   save();
@@ -309,9 +437,7 @@ async function api(path) {
     headers: { "Accept": "application/json" },
     cache: "no-store"
   });
-
   const data = await response.json().catch(() => ({}));
-
   if (!response.ok || data.success === false) {
     throw new Error(data.error || ("HTTP " + response.status));
   }
@@ -320,41 +446,29 @@ async function api(path) {
 
 $("createMailbox").onclick = async () => {
   const c = current();
-  if (!c) return alert("Hãy tạo hoặc chọn Cloud trước.");
+  if (!c) return alert("Vui lòng chọn cổng Cloud.");
   if (busy) return;
-
-  if (c.email && !confirm("Cloud này đã có email. Tạo email mới và thay địa chỉ đang lưu?")) {
-    return;
-  }
-
+  if (c.email && !confirm("Ghi đè Proxy Mail cũ?")) return;
   busy = true;
   $("createMailbox").disabled = true;
-  setStatus("Đang yêu cầu Mail123 tạo hộp thư thật...");
-  setInboxMessage("Đang tạo hộp thư...");
-
+  setStatus("Đang yêu cầu máy chủ Mail123 tạo cổng tiếp sóng...");
+  setInboxMessage("Đang tạo...");
   try {
     const data = await api("/mailbox/new");
     const address = data.address || data.mailbox?.address;
-
     if (!address || typeof address !== "string") {
-      throw new Error("API không trả về địa chỉ email hợp lệ.");
+      throw new Error("Dữ liệu phản hồi lỗi.");
     }
-
     c.email = address;
     c.emailExpiresInDays = data.expires_in_days || null;
     save();
     render();
-
     $("realEmail").value = address;
-    setStatus(
-      "Đã tạo hộp thư: " + address +
-      (c.emailExpiresInDays ? " · Thời hạn lưu thư: " + c.emailExpiresInDays + " ngày." : "")
-    );
-
+    setStatus("Cấp phát thành công: " + address);
     await refreshInbox();
   } catch (error) {
-    setStatus("Tạo email thất bại: " + error.message);
-    setInboxMessage("Không tạo được hộp thư. Kiểm tra kết nối rồi thử lại.");
+    setStatus("Lỗi khởi tạo cổng nhận thư: " + error.message);
+    setInboxMessage("Không thể thiết lập.");
   } finally {
     busy = false;
     $("createMailbox").disabled = false;
@@ -364,16 +478,14 @@ $("createMailbox").onclick = async () => {
 $("copyEmail").onclick = async () => {
   const c = current();
   const address = c && c.email;
-
-  if (!address) return alert("Cloud đang chọn chưa có email thật.");
-
+  if (!address) return alert("Chưa có Proxy Mail.");
   try {
     await navigator.clipboard.writeText(address);
-    setStatus("Đã sao chép: " + address);
+    setStatus("Đã lưu clipboard: " + address);
   } catch (e) {
     $("realEmail").focus();
     $("realEmail").select();
-    setStatus("Trình duyệt không cho sao chép tự động. Nhấn Ctrl+C.");
+    setStatus("Lỗi ghi clipboard tự động. Nhấn Ctrl+C.");
   }
 };
 
@@ -385,67 +497,51 @@ $("refreshInbox").onclick = refreshInbox;
 
 async function refreshInbox() {
   const c = current();
-
   if (!c || !c.email) {
-    setInboxMessage("Cloud đang chọn chưa có email thật.");
-    setStatus("Tạo email thật trước khi kiểm tra thư.");
+    setInboxMessage("Chưa thiết lập cấu hình mail.");
     return;
   }
-
-  setStatus("Đang kiểm tra thư của " + c.email + "...");
-  setInboxMessage("Đang tải thư...");
-
+  setStatus("Đang truy quét hộp thư " + c.email + "...");
+  setInboxMessage("Đang quét...");
   try {
     const data = await api("/mailbox/" + encodeURIComponent(c.email) + "/messages");
-    const messages = Array.isArray(data.messages)
-      ? data.messages
-      : Array.isArray(data)
-        ? data
-        : [];
-
+    const messages = Array.isArray(data.messages) ? data.messages : (Array.isArray(data) ? data : []);
     const box = $("inboxList");
     box.replaceChildren();
-
     if (!messages.length) {
-      setInboxMessage("Chưa có thư đến.");
-      setStatus("Hộp thư đã kiểm tra. Hiện chưa có thư mới.");
+      setInboxMessage("Không phát hiện tín hiệu thư đến mới.");
+      setStatus("Quét hoàn tất: Không có gói tin mới.");
       return;
     }
-
     messages.forEach(message => {
       const card = document.createElement("div");
       card.className = "message";
-
       const subject = document.createElement("strong");
-      subject.textContent = message.subject || "(Không có tiêu đề)";
-
+      subject.textContent = message.subject || "(No Title)";
       const sender = document.createElement("p");
       sender.className = "muted";
-      sender.textContent = "Từ: " + (message.from || message.sender || "Không rõ");
-
+      sender.textContent = "Source: " + (message.from || message.sender || "Unknown");
       card.append(subject, sender);
-
       if (message.date || message.received_at) {
         const date = document.createElement("p");
         date.className = "muted";
-        date.textContent = "Thời gian: " + (message.date || message.received_at);
+        date.textContent = "Timestamp: " + (message.date || message.received_at);
         card.append(date);
       }
-
       if (message.otp_code) {
         const otp = document.createElement("p");
-        otp.textContent = "Mã OTP: " + message.otp_code;
+        otp.textContent = "MÃ OTP ĐÁNH CHẶN: " + message.otp_code;
+        otp.style.color = "#39ff88";
         const copyOtp = makeButton("Sao chép OTP", async () => {
           try {
             await navigator.clipboard.writeText(String(message.otp_code));
-            setStatus("Đã sao chép mã OTP.");
+            setStatus("Đã sao chép mã OTP thành công.");
           } catch (e) {
-            setStatus("Không thể sao chép tự động mã OTP.");
+            setStatus("Lỗi sao chép OTP.");
           }
         }, "smallbtn");
         card.append(otp, copyOtp);
       }
-
       if (message.id !== undefined && message.id !== null) {
         card.append(document.createTextNode(" "));
         card.append(makeButton("Đọc thư", () => readMessage(message.id), "smallbtn"));
@@ -455,72 +551,48 @@ async function refreshInbox() {
         body.textContent = message.text || message.body;
         card.append(body);
       }
-
       box.append(card);
     });
-
-    setStatus("Đã tải " + messages.length + " thư cho " + c.email + ".");
+    setStatus("Tìm thấy " + messages.length + " gói tin cho " + c.email);
   } catch (error) {
-    setInboxMessage("Không tải được thư.");
-    setStatus("Lỗi tải thư: " + error.message);
+    setInboxMessage("Lỗi truy quét.");
+    setStatus("Quét thất bại: " + error.message);
   }
 }
 
 async function readMessage(id) {
   const c = current();
   if (!c || !c.email) return;
-
   try {
-    const data = await api(
-      "/mailbox/" + encodeURIComponent(c.email) +
-      "/messages/" + encodeURIComponent(String(id))
-    );
-
+    const data = await api("/mailbox/" + encodeURIComponent(c.email) + "/messages/" + encodeURIComponent(String(id)));
     const message = data.message || data;
     const dialog = document.createElement("dialog");
-    dialog.style.cssText =
-      "max-width:650px;width:90%;max-height:85vh;overflow:auto;" +
-      "background:#0b1510;color:#e6fff0;border:1px solid #39ff88;" +
-      "border-radius:12px;padding:18px";
-
+    dialog.style.cssText = "max-width:650px;width:90%;max-height:85vh;overflow:auto;background:#0b1510;color:#e6fff0;border:1px solid #39ff88;border-radius:12px;padding:18px";
     const title = document.createElement("h3");
-    title.textContent = message.subject || "Nội dung thư";
-
+    title.textContent = message.subject || "Nội dung gói tin";
     const from = document.createElement("p");
     from.className = "muted";
-    from.textContent = "Từ: " + (message.from || message.sender || "Không rõ");
-
+    from.textContent = "Source: " + (message.from || message.sender || "Unknown");
     const body = document.createElement("pre");
     body.className = "message-body";
-    body.textContent =
-      message.text || message.body || message.content ||
-      "Không có nội dung văn bản. Vui lòng làm mới thu·.";
-
+    body.textContent = message.text || message.body || message.content || "Gói tin trống.";
     const close = makeButton("Đóng", () => dialog.close(), "primary");
-
     dialog.append(title, from, body);
-
     if (message.otp_code) {
       const otp = document.createElement("p");
-      otp.textContent = "Mã OTP: " + message.otp_code;
+      otp.textContent = "OTP: " + message.otp_code;
       dialog.append(otp);
     }
-
     dialog.append(close);
     document.body.append(dialog);
     dialog.addEventListener("close", () => dialog.remove(), { once: true });
     dialog.showModal();
   } catch (error) {
-    setStatus("Không đọc được thư: " + error.message);
+    setStatus("Lỗi đọc gói tin: " + error.message);
   }
 }
 
-if (clouds.length) {
-  selected = clouds[0].id;
-}
-
-render();
-syncCloud();
+initSession();
 </script>
 </body>
 </html>
